@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COREPRISE</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #0d0d0d;
+      --panel-2: #121212;
+      --line: rgba(255,255,255,0.08);
+      --text: #f2f2f2;
+      --muted: #a5a5a5;
+      --soft: #d7d7d7;
+      --accent: #ffffff;
+      --max: 1180px;
+      --radius: 20px;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111 0%, #050505 30%, #040404 100%);
+      color: var(--text);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(5,5,5,0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      letter-spacing: 0.24em;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      filter: brightness(1.08);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 96px 0 56px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-main,
+    .hero-side,
+    .card,
+    .quote,
+    .contact-box,
+    .footer-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 38px;
+      min-height: 540px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.09), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 999px;
+      color: var(--soft);
+      font-size: 0.84rem;
+      background: rgba(255,255,255,0.025);
+      width: fit-content;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.92;
+    }
+
+    h1 {
+      margin: 22px 0 14px;
+      font-size: clamp(2.8rem, 7vw, 5.7rem);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      color: var(--soft);
+      font-size: 1.08rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-weight: 600;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #080808;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background: #ececec;
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.06);
+    }
+
+    .hero-meta {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .meta-box {
+      padding: 16px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+    }
+
+    .meta-box strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .meta-box span {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .hero-side {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .logo-frame {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 270px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .micro-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .micro-card h3,
+    .section-head h2,
+    .quote h3,
+    .contact-box h2 {
+      margin: 0 0 10px;
+    }
+
+    .micro-card p,
+    .section-head p,
+    .quote p,
+    .contact-box p,
+    .game-card p,
+    .footer-note {
+      color: var(--muted);
+    }
+
+    section {
+      padding: 34px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      line-height: 1;
+    }
+
+    .section-head p {
+      max-width: 560px;
+      margin: 0;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.025);
+      color: var(--soft);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font: inherit;
+    }
+
+    .chip.active,
+    .chip:hover {
+      background: #fff;
+      color: #090909;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .game-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb {
+      aspect-ratio: 16 / 10;
+      background: #0a0a0a;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+
+    .game-card:hover .thumb img {
+      transform: scale(1.035);
+    }
+
+    .game-body {
+      padding: 18px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 0.78rem;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--soft);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .game-title-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .game-title-row h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .status {
+      white-space: nowrap;
+      font-size: 0.78rem;
+      color: #111;
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 700;
+    }
+
+    .game-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .small-btn:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .quote {
+      padding: 28px;
+      margin-top: 18px;
+    }
+
+    .quote h3 {
+      font-size: 1.4rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card li {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--soft);
+    }
+
+    .contact-box {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer {
+      padding: 18px 0 40px;
+    }
+
+    .footer-box {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .footer-note {
+      margin: 0;
+      font-size: 0.94rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hide {
+      display: none !important;
+    }
+
+    @media (max-width: 1020px) {
+      .hero-grid,
+      .about-grid,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .games-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        min-height: 70px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .card,
+      .quote,
+      .contact-box,
+      .footer-box {
+        border-radius: 18px;
+      }
+
+      .hero-main {
+        padding: 24px;
+        min-height: auto;
+      }
+
+      .hero-meta,
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .brand {
+        letter-spacing: 0.18em;
+        font-size: 0.88rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <img src="assets/logo-mark.png" alt="COREPRISE mark" />
+        <span>COREPRISE</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#games">Games</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-main reveal">
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              <span>Roblox studio for players who want more than noise</span>
+            </div>
+            <h1>Games with weight, not filler.</h1>
+            <p class="hero-copy">
+              COREPRISE builds serious Roblox experiences for a more mature audience. We care about atmosphere, systems, tension, and games that feel like someone actually thought them through.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#games">See the games</a>
+              <a class="btn btn-ghost" href="#about">Why we exist</a>
+            </div>
+          </div>
+
+          <div class="hero-meta">
+            <div class="meta-box">
+              <strong>16+</strong>
+              <span>Built with older players in mind</span>
+            </div>
+            <div class="meta-box">
+              <strong>Focused</strong>
+              <span>No copy paste trends and no junk systems</span>
+            </div>
+            <div class="meta-box">
+              <strong>Intentional</strong>
+              <span>Every mechanic should earn its place</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-side reveal">
+          <div class="logo-frame">
+            <img src="assets/logo-full.png" alt="COREPRISE full logo" />
+          </div>
+          <div class="micro-card">
+            <h3>What COREPRISE stands for</h3>
+            <p>
+              A studio name only means something if the work behind it has standards. We are trying to make Roblox feel less disposable.
+            </p>
+          </div>
+          <div class="micro-card">
+            <h3>Current direction</h3>
+            <p>
+              Darker tone, sharper pacing, stronger worldbuilding, and mechanics people remember after they log off.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="games">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <h2>Games</h2>
+            <p>
+              These are not thrown together to chase clicks. Each project is meant to stand on its own and feel complete.
+            </p>
+          </div>
+          <div class="filters">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="live">Live</button>
+            <button class="chip" data-filter="dev">In development</button>
+            <button class="chip" data-filter="concept">Concept</button>
+          </div>
+        </div>
+
+        <div class="games-grid">
+          <article class="game-card card reveal" data-type="dev">
+            <div class="thumb">
+              <img src="assets/game-01.jpg" alt="Project image for Black Vault" />
+            </div>
+            <div class="game-body">
+              <div class="tag-row">
+                <span class="tag">Psychological tension</span>
+                <span class="tag">Narrative systems</span>
+              </div>
+              <div class="game-title-row">
+                <h3>Black Vault</h3>
+                <span class="status">In development</span>
+              </div>
+              <p>
+                A controlled descent into a facility that does not explain itself too quickly. Slow pressure, layered systems, and a setting that feels wrong in the best way.
+              </p>
+              <div class="game-actions">
+                <a class="small-btn" href="#contact">Ask about it</a>
+                <a class="small-btn" href="https://www.roblox.com/" target="_blank" rel="noreferrer">Roblox page</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="game-card card reveal" data-type="concept">
+            <div class="thumb">
+              <img src="assets/game-02.jpg" alt="Project image for Dead Static" />
+            </div>
+            <div class="game-body">
+              <div class="tag-row">
+                <span class="tag">Urban survival</span>
+                <span class="tag">Decision pressure</span>
+              </div>
+              <div class="game-title-row">
+                <h3>Dead Static</h3>
+                <span class="status">Concept</span>
+              </div>
+              <p>
+                A city-wide communications collapse where every bad choice sticks. Less noise, more consequence, and a world that never feels fully safe.
+              </p>
+              <div class="game-actions">
+                <a class="small-btn" href="#contact">Ask about it</a>
+                <a class="small-btn" href="https://www.roblox.com/" target="_blank" rel="noreferrer">Roblox page</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="game-card card reveal" data-type="live">
+            <div class="thumb">
+              <img src="assets/game-03.jpg" alt="Project image for Null Sector" />
+            </div>
+            <div class="game-body">
+              <div class="tag-row">
+                <span class="tag">Tactical play</span>
+                <span class="tag">Replayable loops</span>
+              </div>
+              <div class="game-title-row">
+                <h3>Null Sector</h3>
+                <span class="status">Live</span>
+              </div>
+              <p>
+                Tight spaces, readable combat, and systems made to reward awareness instead of mindless grinding. This one is built to hold up over time.
+              </p>
+              <div class="game-actions">
+                <a class="small-btn" href="#contact">Ask about it</a>
+                <a class="small-btn" href="https://www.roblox.com/" target="_blank" rel="noreferrer">Play now</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="quote reveal">
+          <h3>We are not here to flood the platform.</h3>
+          <p>
+            COREPRISE would rather release fewer games that actually leave a mark than push out polished-looking emptiness every few weeks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <h2>About the studio</h2>
+            <p>
+              There is enough shallow design online already. COREPRISE exists because Roblox can carry more tone, more care, and more ambition than people give it credit for.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="card reveal">
+            <h3>What matters here</h3>
+            <ul>
+              <li>Mechanics that serve the mood instead of distracting from it</li>
+              <li>Games with identity, not trend-chasing skins</li>
+              <li>Experiences that respect the player's time and attention</li>
+              <li>Stronger visual direction and sharper pacing</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <h3>What we avoid</h3>
+            <ul>
+              <li>Cheap retention tricks pretending to be game design</li>
+              <li>Brainrot pacing, fake depth, and noisy UI</li>
+              <li>Monetization-first design that guts the actual experience</li>
+              <li>Shipping something just because the algorithm might like it</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact-box reveal">
+          <div>
+            <h2>Contact</h2>
+            <p>
+              If you want to follow the studio, talk about a project, or keep an eye on upcoming releases, this is the place.
+            </p>
+          </div>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:hello@coreprise.com">hello@coreprise.com</a>
+            <a class="btn btn-ghost" href="https://discord.com/" target="_blank" rel="noreferrer">Discord</a>
+            <a class="btn btn-ghost" href="https://www.roblox.com/" target="_blank" rel="noreferrer">Roblox group</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-box reveal">
+        <p class="footer-note">© <span id="year"></span> COREPRISE. Built with standards.</p>
+        <a class="footer-note" href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const chips = document.querySelectorAll('.chip')
+    const cards = document.querySelectorAll('.game-card')
+    const reveals = document.querySelectorAll('.reveal')
+    const year = document.getElementById('year')
+
+    year.textContent = new Date().getFullYear()
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'))
+        chip.classList.add('active')
+
+        const filter = chip.dataset.filter
+
+        cards.forEach(card => {
+          if (filter === 'all') {
+            card.classList.remove('hide')
+            return
+          }
+
+          if (card.dataset.type === filter) {
+            card.classList.remove('hide')
+          } else {
+            card.classList.add('hide')
+          }
+        })
+      })
+    })
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, {
+      threshold: 0.12
+    })
+
+    reveals.forEach(el => observer.observe(el))
+  </script>
+</body>
+</html>
